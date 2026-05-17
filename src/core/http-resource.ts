@@ -42,8 +42,12 @@ type RequestOptions = {
   params?: Record<string, string>;
 };
 
+function getOrigin(): string {
+  return typeof window !== "undefined" ? window.location.origin : "http://localhost";
+}
+
 function buildUrl(path: string, params?: Record<string, string>): string {
-  const url = new URL(`${API_BASE_URL}${path}`, window.location.origin);
+  const url = new URL(`${API_BASE_URL}${path}`, getOrigin());
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.set(key, value);
