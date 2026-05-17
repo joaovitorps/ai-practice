@@ -1,17 +1,11 @@
-import { createQueryKeyStore } from "@lukemorales/query-key-factory";
+export const itemKeys = {
+  all: { scope: "items" } as const,
+  lists: () => ({ scope: "items", type: "list" }) as const,
+  list: (filters: { page: number; search?: string }) => ({ scope: "items", type: "list", ...filters }) as const,
+  detail: (id: string) => ({ scope: "items", type: "detail", id }) as const,
+};
 
-export const keys = createQueryKeyStore({
-  items: {
-    all: null,
-    lists: () => ({ type: "list" }),
-    list: (filters: { page: number; search?: string }) => ({ type: "list", ...filters }),
-    detail: (id: string) => ({ type: "detail", id }),
-  },
-  profiles: {
-    all: null,
-    detail: (id: string) => ({ type: "detail", id }),
-  },
-});
-
-export const itemKeys = keys.items;
-export const profileKeys = keys.profiles;
+export const profileKeys = {
+  all: { scope: "profiles" } as const,
+  detail: (id: string) => ({ scope: "profiles", type: "detail", id }) as const,
+};

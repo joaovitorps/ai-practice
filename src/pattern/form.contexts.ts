@@ -1,20 +1,19 @@
 import { createContext, useContext } from "react";
-import type { FormApi, FieldApi } from "@tanstack/react-form";
 
-export function createFormContext<TFormData>() {
-  const FormContext = createContext<FormApi<TFormData> | null>(null);
-  const FieldContext = createContext<FieldApi<TFormData, unknown, unknown, unknown> | null>(null);
+export function createFormContext() {
+  const FormContext = createContext<unknown>(null);
+  const FieldContext = createContext<unknown>(null);
 
-  function useFormContext() {
+  function useFormContext<T>() {
     const ctx = useContext(FormContext);
     if (!ctx) throw new Error("useFormContext must be used within a FormProvider");
-    return ctx;
+    return ctx as T;
   }
 
-  function useFieldContext() {
+  function useFieldContext<T>() {
     const ctx = useContext(FieldContext);
     if (!ctx) throw new Error("useFieldContext must be used within a FieldProvider");
-    return ctx;
+    return ctx as T;
   }
 
   return { FormContext, FieldContext, useFormContext, useFieldContext };

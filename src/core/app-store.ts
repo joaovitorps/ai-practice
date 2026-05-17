@@ -12,36 +12,25 @@ type AppState = {
   setSidebarCollapsed: (collapsed: boolean) => void;
 };
 
-let appStoreInstance: ReturnType<typeof create<AppState>> | null = null;
-
-function createAppStore() {
-  return create<AppState>()(
-    persist(
-      (set) => ({
-        locale: DEFAULT_LOCALE,
-        accessToken: null,
-        sidebarCollapsed: false,
-        setLocale: (locale) => set({ locale }),
-        setAccessToken: (accessToken) => set({ accessToken }),
-        setSidebarCollapsed: (sidebarCollapsed) => set({ sidebarCollapsed }),
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({
+      locale: DEFAULT_LOCALE as SupportedLocale,
+      accessToken: null as string | null,
+      sidebarCollapsed: false,
+      setLocale: (locale) => set({ locale }),
+      setAccessToken: (accessToken) => set({ accessToken }),
+      setSidebarCollapsed: (sidebarCollapsed) => set({ sidebarCollapsed }),
+    }),
+    {
+      name: "app-store",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        locale: state.locale,
+        sidebarCollapsed: state.sidebarCollapsed,
       }),
-      {
-        name: "app-store",
-        storage: createJSONStorage(() => localStorage),
-        partialize: (state) => ({
-          locale: state.locale,
-          sidebarCollapsed: state.sidebarCollapsed,
-        }),
-      },
-    ),
-  );
-}
+    },
+  ),
+);
 
-export function getAppStore() {
-  if (!appStoreInstance) {
-    appStoreInstance = createAppStore();
-  }
-  return appStoreInstance;
-}
-
-export type AppStore = ReturnType<typeof getAppStore>;
+export type { AppState };

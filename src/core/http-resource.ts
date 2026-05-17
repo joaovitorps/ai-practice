@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "@core/constants";
-import { getAppStore } from "@core/app-store";
+import { useAppStore } from "@core/app-store";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -58,15 +58,14 @@ function getDefaultHeaders(): Record<string, string> {
     Accept: "application/json",
   };
 
-  const appStore = getAppStore();
-  const locale = appStore.getState().locale;
+  const { locale } = useAppStore.getState();
   if (locale) {
     headers["Accept-Language"] = locale;
   }
 
-  const token = appStore.getState().accessToken;
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+  const { accessToken } = useAppStore.getState();
+  if (accessToken) {
+    headers["Authorization"] = `Bearer ${accessToken}`;
   }
 
   return headers;
@@ -117,13 +116,12 @@ export async function httpUpload<T>(options: {
   const url = buildUrl(options.path);
   const headers: Record<string, string> = { ...options.headers };
 
-  const appStore = getAppStore();
-  const token = appStore.getState().accessToken;
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+  const { accessToken } = useAppStore.getState();
+  if (accessToken) {
+    headers["Authorization"] = `Bearer ${accessToken}`;
   }
 
-  const locale = appStore.getState().locale;
+  const { locale } = useAppStore.getState();
   if (locale) {
     headers["Accept-Language"] = locale;
   }

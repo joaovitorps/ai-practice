@@ -1,16 +1,14 @@
 import { describe, it, expect } from "vitest";
-import { getAppStore } from "@core/app-store";
+import { useAppStore } from "@core/app-store";
 
 describe("appStore", () => {
   it("has default locale", () => {
-    const store = getAppStore();
-    expect(store.getState().locale).toBe("en");
+    expect(useAppStore.getState().locale).toBe("en");
   });
 
   it("updates locale", () => {
-    const store = getAppStore();
-    store.getState().setLocale("pt");
-    expect(store.getState().locale).toBe("pt");
-    store.getState().setLocale("en");
+    useAppStore.getState().setLocale("pt");
+    expect(useAppStore.getState().locale).toBe("pt");
+    useAppStore.getState().setLocale("en");
   });
 });

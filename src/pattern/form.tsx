@@ -1,68 +1,59 @@
 import { type ReactNode, type FormHTMLAttributes } from "react";
-import { Form as TanStackForm, Field } from "@tanstack/react-form";
-import { valibotValidator } from "@tanstack/valibot-form-adapter";
-import type { GenericSchema } from "valibot";
-import { FormField, FormLabel, FormError, FormControl } from "@ui/form";
+import { FormField as FormFieldUI, FormLabel, FormError, FormControl } from "@ui/form";
 import { Input } from "@ui/input";
 import { cx } from "@ui/variants";
 
-type FormProps<TFormData> = FormHTMLAttributes<HTMLFormElement> & {
-  onSubmit: (data: TFormData) => Promise<void> | void;
-  defaultValues?: TFormData;
-  schema?: GenericSchema;
+type PatternFormProps = FormHTMLAttributes<HTMLFormElement> & {
+  onSubmit: (data: FormData) => Promise<void> | void;
   children: ReactNode;
   className?: string;
   "data-slot"?: string;
 };
 
-export function PatternForm<TFormData>({ onSubmit, defaultValues, schema, children, className, "data-slot": dataSlot = "pattern-form", ...props }: FormProps<TFormData>) {
+export function PatternForm({
+  onSubmit,
+  children,
+  className,
+  "data-slot": dataSlot = "pattern-form",
+  ...props
+}: PatternFormProps) {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    void onSubmit(formData);
+  };
+
   return (
-    <TanStackForm
-      defaultValues={defaultValues ?? ({} as TFormData)}
-      onSubmit={({ value }) => onSubmit(value as TFormData)}
-      validatorAdapter={valibotValidator()}
-      validators={schema ? { onChange: schema } : undefined}
+    <form
+      data-slot={dataSlot}
+      onSubmit={handleSubmit}
+      className={cx("space-y-4", className)}
+      {...props}
     >
-      {(form) => (
-        <form data-slot={dataSlot} onSubmit={(e) => { e.preventDefault(); void form.handleSubmit(); }} className={cx("space-y-4", className)} {...props}>
-          {typeof children === "function" ? children(form) : children}
-        </form>
-      )}
-    </TanStackForm>
+      {children}
+    </form>
   );
 }
 
-type PatternFormFieldProps<TFormData> = {
+PatternForm.displayName = "PatternForm";
+
+type PatternFormFieldProps = {
   name: string;
   label?: string;
   description?: string;
-  children?: (field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void; errors: string[] }) => ReactNode;
   className?: string;
 };
 
-export function PatternFormField<TFormData>({ name, label, description, children, className }: PatternFormFieldProps<TFormData>) {
+export function PatternFormField({ name, label, description, className }: PatternFormFieldProps) {
   return (
-    <Field name={name}>
-      {(field) => (
-        <FormField className={className}>
-          {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
-          <FormControl>
-            {children ? (
-              children({ value: field.state.value, onChange: (v) => field.handleChange(v), onBlur: field.handleBlur, errors: field.state.meta.errors.map(String) })
-            ) : (
-              <Input id={name} value={field.state.value as string ?? ""} onChange={(e) => field.handleChange(e.target.value)} onBlur={field.handleBlur} state={field.state.meta.errors.length > 0 ? "error" : "default"} />
-            )}
-          </FormControl>
-          {description && <FormFieldDescription>{description}</FormFieldDescription>}
-          <FormError>{field.state.meta.errors.map(String).join(", ")}</FormError>
-        </FormField>
-      )}
-    </Field>
+    <FormFieldUI className={className}>
+      {label && <label className="text-sm font-medium leading-none text-gray-700" htmlFor={name}>{label}</label>}
+      <FormControl>
+        <Input id={name} name={name} />
+      </FormControl>
+      {description && <p className="text-sm text-gray-500">{description}</p>}
+    </FormFieldUI>
   );
-}
-
-function FormFieldDescription({ children, className }: { children: ReactNode; className?: string }) {
-  return <p className={cx("text-sm text-gray-500", className)}>{children}</p>;
 }
 
 export { PatternFormField as FormField };

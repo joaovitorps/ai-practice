@@ -22,10 +22,9 @@
       "@features/*": ["./src/features/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@routes/*": ["./src/routes/*"],
-      "@mocks/*": ["./src/mocks/*"]
-    },
-    "baseUrl": "."
+      "@mocks/*": ["./src/mocks/*"],
+      "@query-client": ["./src/query-client"]
+    }
   },
-  "include": ["src", "vite-env.d.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "vite-env.d.ts"]
 }

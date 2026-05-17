@@ -26,7 +26,7 @@ export const handlers = [
   http.post("/api/items", async ({ request }) => {
     await delay(200);
     const body = await request.json() as { name: string; description: string };
-    const newItem = { id: String(items.length + 1), ...body, status: "active" as const, createdAt: new Date().toISOString().split("T")[0] };
+    const newItem: typeof items[number] = { id: String(items.length + 1), name: body.name, description: body.description, status: "active" as const, createdAt: new Date().toISOString().slice(0, 10) };
     items.push(newItem);
     return HttpResponse.json(newItem, { status: 201 });
   }),
@@ -35,7 +35,7 @@ export const handlers = [
     const index = items.findIndex((i) => i.id === params.itemId);
     if (index === -1) return new HttpResponse(null, { status: 404 });
     const body = await request.json() as Record<string, unknown>;
-    items[index] = { ...items[index], ...body };
+    items[index] = { ...items[index], ...body } as typeof items[number];
     return HttpResponse.json(items[index]);
   }),
   http.delete("/api/items/:itemId", async ({ params }) => {

@@ -1,7 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { itemKeys, profileKeys } from "@core/keys";
 import { httpResource } from "@core/http-resource";
-import { defineApiRoute } from "@core/http-resource";
 
 export type ItemResponse = {
   id: string;
@@ -17,16 +16,14 @@ export type ProfileResponse = {
   email: string;
 };
 
-const itemsRoute = defineApiRoute({ path: "/items", method: "GET" });
-const profileRoute = defineApiRoute({ path: "/profile", method: "GET" });
-
 export const itemQueries = {
   list: (page: number, search?: string) =>
     queryOptions({
       queryKey: [itemKeys.list({ page, search })],
       queryFn: () =>
         httpResource<{ items: ItemResponse[]; total: number }>({
-          ...itemsRoute,
+          path: "/items",
+          method: "GET",
           params: { page: String(page), ...(search ? { search } : {}) },
         }),
       staleTime: 30_000,
@@ -50,7 +47,8 @@ export const profileQueries = {
       queryKey: [profileKeys.detail(id)],
       queryFn: () =>
         httpResource<ProfileResponse>({
-          ...profileRoute,
+          path: "/profile",
+          method: "GET",
         }),
       staleTime: 120_000,
     }),

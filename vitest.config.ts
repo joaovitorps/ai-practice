@@ -12,6 +12,7 @@ export default defineConfig({
       "@layouts": path.resolve(__dirname, "./src/layouts"),
       "@routes": path.resolve(__dirname, "./src/routes"),
       "@mocks": path.resolve(__dirname, "./src/mocks"),
+      "@query-client": path.resolve(__dirname, "./src/query-client"),
     },
   },
   projects: [

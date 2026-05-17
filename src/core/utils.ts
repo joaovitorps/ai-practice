@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
-import type { ClassValue } from "cva";
+
+type ClassValue = string | number | boolean | undefined | null | ClassValue[];
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(inputs.filter(Boolean).join(" "));

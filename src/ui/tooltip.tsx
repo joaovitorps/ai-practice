@@ -11,7 +11,7 @@ type TooltipProps = {
 
 export function Tooltip({ content, children, side = "top", className, "data-slot": dataSlot = "tooltip" }: TooltipProps) {
   const [visible, setVisible] = useState(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const show = () => { clearTimeout(timeoutRef.current); setVisible(true); };
   const hide = () => { timeoutRef.current = setTimeout(() => setVisible(false), 100); };

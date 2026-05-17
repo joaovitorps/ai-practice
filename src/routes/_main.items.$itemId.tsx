@@ -1,19 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useItem } from "@features/items/hooks";
-import { queryClient } from "@query-client";
-import { itemQueries } from "@core/queries";
 import { Loading } from "@ui/loading";
 import { Badge } from "@ui/badge";
 
 export const Route = createFileRoute("/_main/items/$itemId")({
-  loader: ({ params }) => {
-    void queryClient.prefetchQuery(itemQueries.detail(params.itemId));
-  },
   component: ItemDetailPage,
 });
 
 function ItemDetailPage() {
-  const itemId = Route.useParams().itemId;
+  const { itemId } = Route.useParams();
   const { data: item, isLoading, error } = useItem(itemId);
 
   if (isLoading) return <Loading />;
@@ -22,7 +17,7 @@ function ItemDetailPage() {
 
   return (
     <div className="space-y-4">
-      <Link to="/items" className="text-sm text-gray-500 hover:text-gray-900">&larr; Back to items</Link>
+      <a href="/items" className="text-sm text-gray-500 hover:text-gray-900">&larr; Back to items</a>
       <h1 className="text-2xl font-bold">{item.name}</h1>
       <p className="text-gray-600">{item.description}</p>
       <Badge variant={item.status === "active" ? "success" : "default"}>{item.status}</Badge>
