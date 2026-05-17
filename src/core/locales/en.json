@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "noResults": "No results found",
+    "confirm": "Confirm"
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Register",
+    "logout": "Log out",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "loginTitle": "Sign in to your account",
+    "registerTitle": "Create a new account"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "items": "Items",
+    "settings": "Settings",
+    "profile": "Profile"
+  },
+  "items": {
+    "title": "Items",
+    "emptyState": "No items yet",
+    "createItem": "Create item",
+    "itemName": "Item name",
+    "itemDescription": "Item description"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language"
+  }
+}

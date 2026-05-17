@@ -1,0 +1,45 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "error": "Ocorreu um erro",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "search": "Buscar",
+    "noResults": "Nenhum resultado encontrado",
+    "confirm": "Confirmar"
+  },
+  "auth": {
+    "login": "Entrar",
+    "register": "Registrar",
+    "logout": "Sair",
+    "email": "E-mail",
+    "password": "Senha",
+    "name": "Nome",
+    "loginTitle": "Entre na sua conta",
+    "registerTitle": "Crie uma nova conta"
+  },
+  "nav": {
+    "dashboard": "Painel",
+    "items": "Itens",
+    "settings": "Configurações",
+    "profile": "Perfil"
+  },
+  "items": {
+    "title": "Itens",
+    "emptyState": "Nenhum item ainda",
+    "createItem": "Criar item",
+    "itemName": "Nome do item",
+    "itemDescription": "Descrição do item"
+  },
+  "dashboard": {
+    "title": "Painel",
+    "welcome": "Bem-vindo de volta"
+  },
+  "settings": {
+    "title": "Configurações",
+    "language": "Idioma"
+  }
+}
