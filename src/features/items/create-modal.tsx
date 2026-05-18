@@ -20,7 +20,7 @@ export function CreateProductModal({ open, onOpenChange }: CreateProductModalPro
       name: "",
       description: "",
     } as ItemCreateInput,
-    validators: { onChange: itemCreateSchema },
+    validators: { onSubmit: itemCreateSchema },
     onSubmit: async ({ value }) => {
       createItem.mutate(value, {
         onSuccess: () => {

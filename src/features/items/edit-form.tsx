@@ -27,7 +27,7 @@ export function EditProductForm({ item }: EditProductFormProps) {
       description: item.description,
       status: item.status,
     } as ItemUpdateInput,
-    validators: { onChange: itemUpdateSchema },
+    validators: { onSubmit: itemUpdateSchema },
     onSubmit: async ({ value }) => {
       updateItem.mutate(
         { itemId: item.id, data: value },
