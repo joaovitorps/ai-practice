@@ -18,6 +18,7 @@ import { Route as MainDashboardRouteImport } from "./routes/_main.dashboard"
 import { Route as AuthRegisterRouteImport } from "./routes/_auth.register"
 import { Route as AuthLoginRouteImport } from "./routes/_auth.login"
 import { Route as MainItemsItemIdRouteImport } from "./routes/_main.items.$itemId"
+import { Route as MainItemsItemIdEditRouteImport } from "./routes/_main.items.$itemId.edit"
 
 const MainRoute = MainRouteImport.update({
   id: "/_main",
@@ -62,6 +63,11 @@ const MainItemsItemIdRoute = MainItemsItemIdRouteImport.update({
   path: "/$itemId",
   getParentRoute: () => MainItemsRoute,
 } as any)
+const MainItemsItemIdEditRoute = MainItemsItemIdEditRouteImport.update({
+  id: "/edit",
+  path: "/edit",
+  getParentRoute: () => MainItemsItemIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
@@ -70,7 +76,8 @@ export interface FileRoutesByFullPath {
   "/dashboard": typeof MainDashboardRoute
   "/items": typeof MainItemsRouteWithChildren
   "/settings": typeof MainSettingsRoute
-  "/items/$itemId": typeof MainItemsItemIdRoute
+  "/items/$itemId": typeof MainItemsItemIdRouteWithChildren
+  "/items/$itemId/edit": typeof MainItemsItemIdEditRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
@@ -79,7 +86,8 @@ export interface FileRoutesByTo {
   "/dashboard": typeof MainDashboardRoute
   "/items": typeof MainItemsRouteWithChildren
   "/settings": typeof MainSettingsRoute
-  "/items/$itemId": typeof MainItemsItemIdRoute
+  "/items/$itemId": typeof MainItemsItemIdRouteWithChildren
+  "/items/$itemId/edit": typeof MainItemsItemIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -91,7 +99,8 @@ export interface FileRoutesById {
   "/_main/dashboard": typeof MainDashboardRoute
   "/_main/items": typeof MainItemsRouteWithChildren
   "/_main/settings": typeof MainSettingsRoute
-  "/_main/items/$itemId": typeof MainItemsItemIdRoute
+  "/_main/items/$itemId": typeof MainItemsItemIdRouteWithChildren
+  "/_main/items/$itemId/edit": typeof MainItemsItemIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
     | "/items"
     | "/settings"
     | "/items/$itemId"
+    | "/items/$itemId/edit"
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
@@ -112,6 +122,7 @@ export interface FileRouteTypes {
     | "/items"
     | "/settings"
     | "/items/$itemId"
+    | "/items/$itemId/edit"
   id:
     | "__root__"
     | "/"
@@ -123,6 +134,7 @@ export interface FileRouteTypes {
     | "/_main/items"
     | "/_main/settings"
     | "/_main/items/$itemId"
+    | "/_main/items/$itemId/edit"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -196,6 +208,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof MainItemsItemIdRouteImport
       parentRoute: typeof MainItemsRoute
     }
+    "/_main/items/$itemId/edit": {
+      id: "/_main/items/$itemId/edit"
+      path: "/edit"
+      fullPath: "/items/$itemId/edit"
+      preLoaderRoute: typeof MainItemsItemIdEditRouteImport
+      parentRoute: typeof MainItemsItemIdRoute
+    }
   }
 }
 
@@ -211,12 +230,24 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface MainItemsItemIdRouteChildren {
+  MainItemsItemIdEditRoute: typeof MainItemsItemIdEditRoute
+}
+
+const MainItemsItemIdRouteChildren: MainItemsItemIdRouteChildren = {
+  MainItemsItemIdEditRoute: MainItemsItemIdEditRoute,
+}
+
+const MainItemsItemIdRouteWithChildren = MainItemsItemIdRoute._addFileChildren(
+  MainItemsItemIdRouteChildren,
+)
+
 interface MainItemsRouteChildren {
-  MainItemsItemIdRoute: typeof MainItemsItemIdRoute
+  MainItemsItemIdRoute: typeof MainItemsItemIdRouteWithChildren
 }
 
 const MainItemsRouteChildren: MainItemsRouteChildren = {
-  MainItemsItemIdRoute: MainItemsItemIdRoute,
+  MainItemsItemIdRoute: MainItemsItemIdRouteWithChildren,
 }
 
 const MainItemsRouteWithChildren = MainItemsRoute._addFileChildren(
