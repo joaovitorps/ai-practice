@@ -14,13 +14,13 @@ Auto-activates on: `"commit"`, `"create commit"`, `"atomic commit"`
 └──────┬──────┘
        ▼
 ┌─────────────┐
-│  SAFETY     │ ── Check for secrets (.env, credentials, keys)
-│   CHECK     │   Abort if detected without explicit override
+│ GIT STATUS  │ ── Run `git status --porcelain` + `git diff`
+│  & DIFF     │
 └──────┬──────┘
        ▼
 ┌─────────────┐
-│ GIT STATUS  │ ── Run `git status --porcelain` + `git diff`
-│  & DIFF     │
+│  SAFETY     │ ── Scan diff output for secrets (.env, credentials, keys)
+│   CHECK     │   Abort if detected without explicit override
 └──────┬──────┘
        ▼
 ┌─────────────┐
@@ -58,8 +58,10 @@ Auto-activates on: `"commit"`, `"create commit"`, `"atomic commit"`
 
 ## Components
 
-### 1. Safety Check
-- Scan diff for: `.env`, `credentials.json`, `private-key`, `secret`, `password`, `api_key`, `token`
+### 1. Safety Check (runs after Git Status & Diff)
+- Scans the `git diff` output from the previous step for sensitive patterns
+- Checks file names: `.env`, `.env.*`, `credentials.json`, `secrets.json`, `*.pem`, `*.key`, `id_rsa`, `private-key*`
+- Checks diff content for patterns: `password=`, `api_key=`, `token=`, `secret=`, `private_key=`
 - If detected → warn user and require explicit confirmation to proceed
 - Never commit secrets without explicit override
 
@@ -86,14 +88,14 @@ Auto-activates on: `"commit"`, `"create commit"`, `"atomic commit"`
 ### 4. Split Suggestion
 When mixed changes detected:
 - Propose logical groupings
-- Show per-commit preview:
+- Show per-commit preview (if the full file will go to the commit, the line info can be omitted):
   ```
   Commit 1: feat: add JWT authentication
   - src/auth/jwt.ts#L1-50
   - src/middleware/auth.ts#L10-25
 
   Commit 2: fix: correct button alignment on mobile
-  - src/components/Button.tsx#L35-42
+  - src/components/Button.tsx
   ```
 - User decides to split or proceed as-is
 
