@@ -21,6 +21,7 @@ function EditItemPage() {
         &larr; Back to items
       </Link>
       <h1 className="text-2xl font-bold">Edit {item.name}</h1>
+      <p className="text-sm text-gray-400">Created: {item.createdAt}</p>
       <EditProductForm item={item} />
     </div>
   );

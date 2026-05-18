@@ -17,6 +17,7 @@ import { Route as MainItemsRouteImport } from "./routes/_main.items"
 import { Route as MainDashboardRouteImport } from "./routes/_main.dashboard"
 import { Route as AuthRegisterRouteImport } from "./routes/_auth.register"
 import { Route as AuthLoginRouteImport } from "./routes/_auth.login"
+import { Route as MainItemsIndexRouteImport } from "./routes/_main.items.index"
 import { Route as MainItemsItemIdRouteImport } from "./routes/_main.items.$itemId"
 import { Route as MainItemsItemIdEditRouteImport } from "./routes/_main.items.$itemId.edit"
 
@@ -58,6 +59,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: "/login",
   getParentRoute: () => AuthRoute,
 } as any)
+const MainItemsIndexRoute = MainItemsIndexRouteImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => MainItemsRoute,
+} as any)
 const MainItemsItemIdRoute = MainItemsItemIdRouteImport.update({
   id: "/$itemId",
   path: "/$itemId",
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   "/items": typeof MainItemsRouteWithChildren
   "/settings": typeof MainSettingsRoute
   "/items/$itemId": typeof MainItemsItemIdRouteWithChildren
+  "/items/": typeof MainItemsIndexRoute
   "/items/$itemId/edit": typeof MainItemsItemIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -84,9 +91,9 @@ export interface FileRoutesByTo {
   "/login": typeof AuthLoginRoute
   "/register": typeof AuthRegisterRoute
   "/dashboard": typeof MainDashboardRoute
-  "/items": typeof MainItemsRouteWithChildren
   "/settings": typeof MainSettingsRoute
   "/items/$itemId": typeof MainItemsItemIdRouteWithChildren
+  "/items": typeof MainItemsIndexRoute
   "/items/$itemId/edit": typeof MainItemsItemIdEditRoute
 }
 export interface FileRoutesById {
@@ -100,6 +107,7 @@ export interface FileRoutesById {
   "/_main/items": typeof MainItemsRouteWithChildren
   "/_main/settings": typeof MainSettingsRoute
   "/_main/items/$itemId": typeof MainItemsItemIdRouteWithChildren
+  "/_main/items/": typeof MainItemsIndexRoute
   "/_main/items/$itemId/edit": typeof MainItemsItemIdEditRoute
 }
 export interface FileRouteTypes {
@@ -112,6 +120,7 @@ export interface FileRouteTypes {
     | "/items"
     | "/settings"
     | "/items/$itemId"
+    | "/items/"
     | "/items/$itemId/edit"
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -119,9 +128,9 @@ export interface FileRouteTypes {
     | "/login"
     | "/register"
     | "/dashboard"
-    | "/items"
     | "/settings"
     | "/items/$itemId"
+    | "/items"
     | "/items/$itemId/edit"
   id:
     | "__root__"
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | "/_main/items"
     | "/_main/settings"
     | "/_main/items/$itemId"
+    | "/_main/items/"
     | "/_main/items/$itemId/edit"
   fileRoutesById: FileRoutesById
 }
@@ -201,6 +211,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
+    "/_main/items/": {
+      id: "/_main/items/"
+      path: "/"
+      fullPath: "/items/"
+      preLoaderRoute: typeof MainItemsIndexRouteImport
+      parentRoute: typeof MainItemsRoute
+    }
     "/_main/items/$itemId": {
       id: "/_main/items/$itemId"
       path: "/$itemId"
@@ -244,10 +261,12 @@ const MainItemsItemIdRouteWithChildren = MainItemsItemIdRoute._addFileChildren(
 
 interface MainItemsRouteChildren {
   MainItemsItemIdRoute: typeof MainItemsItemIdRouteWithChildren
+  MainItemsIndexRoute: typeof MainItemsIndexRoute
 }
 
 const MainItemsRouteChildren: MainItemsRouteChildren = {
   MainItemsItemIdRoute: MainItemsItemIdRouteWithChildren,
+  MainItemsIndexRoute: MainItemsIndexRoute,
 }
 
 const MainItemsRouteWithChildren = MainItemsRoute._addFileChildren(
