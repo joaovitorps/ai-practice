@@ -6,5 +6,6 @@ dist
 .env.*
 !.env.example
 .DS_Store
-src/routeTree.gen.tsnode_modules
+src/routeTree.gen.ts
+node_modules
 public/mockServiceWorker.js
