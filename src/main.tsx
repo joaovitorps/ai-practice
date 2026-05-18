@@ -5,13 +5,12 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { I18nextProvider } from "react-i18next";
 import { queryClient } from "@query-client";
 import { i18n, initializeI18n } from "@core/i18n";
-import { AuthProvider } from "@core/auth-provider";
-import { Route } from "@routes/__root";
+import { routeTree } from "./routeTree.gen";
 import { MOCK_MODE, IS_DEV } from "@core/constants";
 import "./app.css";
 
 const router = createRouter({
-  routeTree: Route,
+  routeTree,
   context: { queryClient },
   defaultPreload: "intent",
 });

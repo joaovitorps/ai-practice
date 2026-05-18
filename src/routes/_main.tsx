@@ -8,7 +8,6 @@ export const Route = createFileRoute("/_main")({
   beforeLoad: () => {
     const user = useSessionStore.getState().user;
 if (!user) {
-      // @ts-expect-error route typing
       throw redirect({ to: "/login" });
     }
   },

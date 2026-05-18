@@ -28,6 +28,7 @@ export const useAppStore = create<AppState>()(
       partialize: (state) => ({
         locale: state.locale,
         sidebarCollapsed: state.sidebarCollapsed,
+        // accessToken: state.accessToken,
       }),
     },
   ),
