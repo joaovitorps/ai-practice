@@ -8,7 +8,26 @@ const items = [
 
 const profile = { id: "user-1", name: "Demo User", email: "demo@example.com" };
 
+const users = [
+  { id: "user-1", name: "Demo User", email: "demo@example.com", password: "password123" },
+];
+
 export const handlers = [
+  http.post("/api/auth/login", async ({ request }) => {
+    await delay(100);
+    const body = (await request.json()) as { email: string; password: string };
+    const user = users.find((u) => u.email === body.email && u.password === body.password);
+    if (!user) return HttpResponse.json({ error: "Invalid credentials" }, { status: 401 });
+    return HttpResponse.json({ accessToken: "mock-access-token", user: { id: user.id, name: user.name, email: user.email } });
+  }),
+  http.post("/api/auth/register", async ({ request }) => {
+    await delay(100);
+    const body = (await request.json()) as { name: string; email: string; password: string };
+    if (users.some((u) => u.email === body.email)) return HttpResponse.json({ error: "Email already exists" }, { status: 409 });
+    const newUser = { id: `user-${users.length + 1}`, ...body };
+    users.push(newUser);
+    return HttpResponse.json({ accessToken: "mock-access-token", user: { id: newUser.id, name: newUser.name, email: newUser.email } }, { status: 201 });
+  }),
   http.get("/api/items", async ({ request }) => {
     await delay(200);
     const url = new URL(request.url);
