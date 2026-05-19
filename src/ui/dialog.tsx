@@ -29,6 +29,7 @@ export function Dialog({ open, onOpenChange, children, "data-slot": dataSlot = "
         "rounded-lg border-none bg-white p-0 shadow-lg",
         "backdrop:bg-black/50",
         "max-h-[85vh] max-w-[90vw] w-[480px]",
+        "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
       )}
       onClose={() => onOpenChange(false)}
       onClick={(e) => {

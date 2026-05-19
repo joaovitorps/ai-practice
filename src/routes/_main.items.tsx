@@ -1,10 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { ItemsList } from "@features/items/list";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_main/items")({
-  component: ItemsPage,
+  component: ItemsLayout,
 });
 
-function ItemsPage() {
-  return <div><ItemsList /></div>;
+function ItemsLayout() {
+  return <Outlet />;
 }
