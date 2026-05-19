@@ -12,7 +12,9 @@ jobs:
       contains(github.event.comment.body, ' /oc') ||
       startsWith(github.event.comment.body, '/oc') ||
       contains(github.event.comment.body, ' /opencode') ||
-      startsWith(github.event.comment.body, '/opencode')
+      startsWith(github.event.comment.body, '/opencode') ||
+      contains(github.event.comment.body, ' @OpenCode') ||
+      startsWith(github.event.comment.body, '@OpenCode')
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -30,4 +32,9 @@ jobs:
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
-          model: opencode-go/deepseek-v4-pro
+          model: ${{ vars.MODEL }}
+          prompt: |
+            Review this pull request:
+            - Check for code quality issues
+            - Look for potential bugs
+            - Suggest improvements
