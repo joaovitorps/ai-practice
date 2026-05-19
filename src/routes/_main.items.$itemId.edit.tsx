@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useItem } from "@features/items/hooks";
-import { EditProductForm } from "@features/items/edit-form";
+import { EditItemForm } from "@features/items/edit-form";
 import { Loading } from "@ui/loading";
 
 export const Route = createFileRoute("/_main/items/$itemId/edit")({
@@ -22,7 +22,7 @@ function EditItemPage() {
       </Link>
       <h1 className="text-2xl font-bold">Edit {item.name}</h1>
       <p className="text-sm text-gray-400">Created: {item.createdAt}</p>
-      <EditProductForm item={item} />
+      <EditItemForm item={item} />
     </div>
   );
 }

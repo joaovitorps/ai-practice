@@ -8,7 +8,7 @@ import { Select } from "@ui/select";
 import { Button } from "@ui/button";
 import { cx } from "@ui/variants";
 
-type EditProductFormProps = {
+type EditItemFormProps = {
   item: {
     id: string;
     name: string;
@@ -17,7 +17,7 @@ type EditProductFormProps = {
   };
 };
 
-export function EditProductForm({ item }: EditProductFormProps) {
+export function EditItemForm({ item }: EditItemFormProps) {
   const navigate = useNavigate();
   const updateItem = useUpdateItem();
 
@@ -38,7 +38,7 @@ export function EditProductForm({ item }: EditProductFormProps) {
 
   return (
     <form
-      data-slot="edit-product-form"
+      data-slot="edit-item-form"
       className="space-y-4"
       onSubmit={(e) => {
         e.preventDefault();
@@ -57,11 +57,11 @@ export function EditProductForm({ item }: EditProductFormProps) {
             onChange={(e) => field.handleChange(e.target.value)}
             onBlur={field.handleBlur}
           />
-          {field.state.meta.errors?.map((error) => error ? (
+          {field.state.meta.errors?.map((error) => error && (
             <p key={error.message} className="text-sm text-red-600">
               {error.message}
             </p>
-          ) : null)}
+          ))}
         </div>
       )} />
 
@@ -76,11 +76,11 @@ export function EditProductForm({ item }: EditProductFormProps) {
             onChange={(e) => field.handleChange(e.target.value)}
             onBlur={field.handleBlur}
           />
-          {field.state.meta.errors?.map((error) => error ? (
+          {field.state.meta.errors?.map((error) => error && (
             <p key={error.message} className="text-sm text-red-600">
               {error.message}
             </p>
-          ) : null)}
+          ))}
         </div>
       )} />
 
@@ -102,6 +102,9 @@ export function EditProductForm({ item }: EditProductFormProps) {
       )} />
 
       <div className={cx("flex justify-end gap-2")}>
+        {updateItem.isError && (
+          <p className="text-sm text-red-600 self-center">{updateItem.error?.message ?? "Failed to save changes"}</p>
+        )}
         <Button type="button" variant="outline" onClick={() => navigate({ to: "/items" })}>
           Cancel
         </Button>

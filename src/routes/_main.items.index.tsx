@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ItemsList } from "@features/items/list";
-import { CreateProductModal } from "@features/items/create-modal";
+import { CreateItemModal } from "@features/items/create-modal";
 import { DataGrid } from "@pattern/data-grid";
 import { DataGridHeader } from "@pattern/data-grid-header";
 import { Checkbox } from "@ui/checkbox";
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_main/items/")({
 function ItemsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
+  const [page, setPage] = useState(1);
 
   return (
     <DataGrid>
@@ -21,7 +22,7 @@ function ItemsPage() {
         title="Items"
         actions={
           <Button size="sm" onClick={() => setIsCreateModalOpen(true)}>
-            Add Product
+            Add Item
           </Button>
         }
         filters={
@@ -34,8 +35,9 @@ function ItemsPage() {
           </label>
         }
       />
-      <ItemsList showArchived={showArchived} />
-      <CreateProductModal open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen} />
+      <ItemsList page={page} showArchived={showArchived} onPageChange={setPage} />
+      <CreateItemModal open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen} />
     </DataGrid>
   );
 }
+

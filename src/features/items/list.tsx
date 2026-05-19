@@ -10,9 +10,9 @@ import { Loading } from "@ui/loading";
 import { ItemsEmptyState } from "@features/items/empty-state";
 import { DeleteConfirmation } from "@features/items/delete-confirmation";
 
-type ItemsListProps = { page?: number; search?: string; showArchived?: boolean };
+type ItemsListProps = { page?: number; search?: string; showArchived?: boolean; onPageChange?: (page: number) => void };
 
-export function ItemsList({ page = 1, search, showArchived = false }: ItemsListProps) {
+export function ItemsList({ page = 1, search, showArchived = false, onPageChange = () => {} }: ItemsListProps) {
   const { data, isLoading, error } = useItems(page, search);
 
   const filteredItems = useMemo(() => {
@@ -23,7 +23,7 @@ export function ItemsList({ page = 1, search, showArchived = false }: ItemsListP
 
   if (isLoading) return <Loading />;
   if (error) return <p className="text-red-600">Error loading items</p>;
-  if (!data || data.items.length === 0) return <ItemsEmptyState />;
+  if (!data || filteredItems.length === 0) return <ItemsEmptyState />;
 
   const totalPages = Math.ceil(data.total / 10);
 
@@ -48,9 +48,8 @@ export function ItemsList({ page = 1, search, showArchived = false }: ItemsListP
             ),
           },
         ]}
-        onRowClick={(row) => {}}
       />
-      <DataGridFooter page={page} totalPages={totalPages} onPageChange={() => {}} totalItems={data.total} />
+      <DataGridFooter page={page} totalPages={totalPages} onPageChange={onPageChange} totalItems={data.total} />
     </DataGrid>
   );
 }

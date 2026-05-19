@@ -7,12 +7,12 @@ import { Input } from "@ui/input";
 import { Textarea } from "@ui/textarea";
 import { Button } from "@ui/button";
 
-type CreateProductModalProps = {
+type CreateItemModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-export function CreateProductModal({ open, onOpenChange }: CreateProductModalProps) {
+export function CreateItemModal({ open, onOpenChange }: CreateItemModalProps) {
   const createItem = useCreateItem();
 
   const form = useForm({
@@ -37,12 +37,12 @@ export function CreateProductModal({ open, onOpenChange }: CreateProductModalPro
   }, [open, form]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} data-slot="create-product-modal">
+    <Dialog open={open} onOpenChange={onOpenChange} data-slot="create-item-modal">
       <DialogHeader>
-        <DialogTitle>Create Product</DialogTitle>
+        <DialogTitle>Create Item</DialogTitle>
       </DialogHeader>
       <form
-        data-slot="create-product-form"
+        data-slot="create-item-form"
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -62,11 +62,11 @@ export function CreateProductModal({ open, onOpenChange }: CreateProductModalPro
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={field.handleBlur}
                 />
-                {field.state.meta.errors?.map((error) => error ? (
+                {field.state.meta.errors?.map((error) => error && (
                   <p key={error.message} className="text-sm text-red-600">
                     {error.message}
                   </p>
-                ) : null)}
+                ))}
               </div>
             )} />
 
@@ -81,21 +81,24 @@ export function CreateProductModal({ open, onOpenChange }: CreateProductModalPro
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={field.handleBlur}
                 />
-                {field.state.meta.errors?.map((error) => error ? (
+                {field.state.meta.errors?.map((error) => error && (
                   <p key={error.message} className="text-sm text-red-600">
                     {error.message}
                   </p>
-                ) : null)}
+                ))}
               </div>
             )} />
           </div>
         </DialogContent>
         <DialogFooter>
+          {createItem.isError && (
+            <p className="text-sm text-red-600">{createItem.error?.message ?? "Failed to create item"}</p>
+          )}
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
           <Button type="submit" disabled={createItem.isPending}>
-            Create Product
+            Create Item
           </Button>
         </DialogFooter>
       </form>

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { itemQueries } from "@core/queries";
-import { createItem, deleteItem, updateItem } from "@core/api/items";
+import { createItem, updateItem } from "@core/api/items";
 import { itemKeys } from "@core/keys";
 import type { CreateItemRequest, UpdateItemRequest } from "@core/api/items";
 
@@ -24,14 +24,6 @@ export function useUpdateItem() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ itemId, data }: { itemId: string; data: UpdateItemRequest }) => updateItem(itemId, data),
-    onSuccess: () => { void queryClient.invalidateQueries({ queryKey: [itemKeys.all] }); },
-  });
-}
-
-export function useDeleteItem() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (itemId: string) => deleteItem(itemId),
     onSuccess: () => { void queryClient.invalidateQueries({ queryKey: [itemKeys.all] }); },
   });
 }
